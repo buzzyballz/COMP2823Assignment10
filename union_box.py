@@ -69,7 +69,7 @@ class UnionBox(UnionInterface):
             res.append(l[2])
         else:
             res.append(r[1])
-        merged = (r[1][1], l[2][2])
+        merged = (r[1][0], l[2][1])
         res.append(merged)
         res.append(r[2])
         res.append(r[3])
