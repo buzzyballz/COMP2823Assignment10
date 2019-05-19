@@ -54,7 +54,26 @@ class UnionBox(UnionInterface):
         :return: The merged coordinates to present.
         """
         # TODO implement me.
-        return []
+        # Start from left side and clockwise
+        res = []
+        # initialise with left-bottom corner
+        res.append(l[0])
+        res.append(l[1])
+        # Two cases - left is higher vs right is higher
+        # Height will be the y2 - y1
+        left_height = l[1][1] - l[0][1]
+        right_height = r[1][1] - r[0][1]
+        # Case right is higher
+        if left_height > right_height:
+            # Append the left top corner
+            res.append(l[2])
+        else:
+            res.append(r[1])
+        merged = (r[1][1], l[2][2])
+        res.append(merged)
+        res.append(r[2])
+        res.append(r[3])
+        return res
 
     def union(self, box_list):
         """
