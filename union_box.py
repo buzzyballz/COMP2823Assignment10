@@ -55,6 +55,8 @@ class UnionBox(UnionInterface):
         """
         # TODO implement me.
         # Start from left side and clockwise
+        print(l)
+        print(r)
         res = []
         # initialise with left-bottom corner
         res.append(l[0])
