@@ -58,6 +58,9 @@ class UnionBox(UnionInterface):
         print(l)
         print(r)
         res = []
+        # No overlap
+        if l[-1][0] < r[0][0]:
+            return l+r
         # initialise with left-bottom corner
         res.append(l[0])
         res.append(l[1])
