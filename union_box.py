@@ -1,4 +1,5 @@
-
+from box import Skyline
+from box import Strip
 from union_interface import UnionInterface
 
 
@@ -55,29 +56,17 @@ class UnionBox(UnionInterface):
         """
         # TODO implement me.
         # Start from left side and clockwise
+        res = []
+        h1 = 0
+        h2 = 0
+        i = 0
+        j = 0
         print(l)
         print(r)
-        res = []
-        # No overlap
-        if l[-1][0] < r[0][0]:
-            return l+r
-        # initialise with left-bottom corner
-        res.append(l[0])
-        res.append(l[1])
-        # Two cases - left is higher vs right is higher
-        # Height will be the y2 - y1
-        left_height = l[1][1] - l[0][1]
-        right_height = r[1][1] - r[0][1]
-        # Case right is higher
-        if left_height > right_height:
-            # Append the left top corner
-            res.append(l[2])
-        else:
-            res.append(r[1])
-        merged = (r[1][0], l[2][1])
-        res.append(merged)
-        res.append(r[2])
-        res.append(r[3])
+        #while i < len(l) && j < len(r):
+            #if l.arr[i].left < r.arr[j].left:
+
+
         return res
 
     def union(self, box_list):
@@ -88,6 +77,7 @@ class UnionBox(UnionInterface):
         :param box_list: List of boxes represented as coordinates.
         :return: The union of all the boxes.  (As presented in the example above)
         """
+        '''
         if not box_list:
             return []
 
@@ -99,9 +89,55 @@ class UnionBox(UnionInterface):
             right_box = box_list[1]
             merged = self.merge(left_box, right_box)
             return merged
+        '''
+        new_box_list = []
+        for box in box_list:
+            left = box[0][0]
+            height = box[1][1]
+            right = box[2][0]
+            new_box_list.append((left, height, right))
+
+        edges = []
+        edges.extend([building[0], building[2]] for building in new_box_list)
+        edges = sorted(sum(edges, []))  # sorting and flatening the list of building edges
+
+        current = 0
+        points = []
+        points.append((edges[0],0))
+
+        for i in edges:
+            active = []
+            active.extend(building for building in new_box_list if (building[0] <= i and building[2] > i))
+            # current observed point is within borders of these buildings (active buildings)
+            if not active:
+                # if there is no active buildings, highest point is 0
+                current = 0
+                points.append((i, 0))
+                continue
+            max_h = max(building[1] for building in active)
+            if max_h != current:
+                # if current highest point is lower then highest point of current active buildings change current highest point
+                current = max_h
+                points.append((i, max_h))
+        res = []
+        for i in range(len(points)):
+            if i >= 2:
+                res.append((points[i][0], points[i-1][1]))
+
+            res.append(points[i])
+
+
+        return res
+
+    def helper(self, box_list, l, h):
+        if(l == h):
+            res = Skyline(2)
+            res.append(Strip(box_list[l][0], box_list[l][1]))
+            res.append(Strip(box_list[l][2], 0))
+            return res
 
         # Else, time to do me a recursion
-        left_list = self.union(box_list[:int(len(box_list) / 2)])
-        right_list = self.union(box_list[int(len(box_list) / 2):])
+        left_list = self.helper(box_list, l, int((l+2)/2))
+        right_list = self.helper(box_list, 1+int((l+2)/2), h)
         merged = self.merge(left_list, right_list)
         return merged
