@@ -33,19 +33,3 @@ class UnionInterface(metaclass=abc.ABCMeta):
         :return: The array of coordinates the make up the union of the boxes.
         """
         pass
-
-    @abc.abstractmethod
-    def merge(self, l, r):
-        """
-        Merge two (or more) boxes together to form a single box.
-
-        e.g:
-           ____           ____
-         _|__  |        _|    |
-        | |  | |  ==>  |      |
-        |_|__|_|       |      |
-
-
-        :return: The array of coordinates of the merged boxes.
-        """
-        pass

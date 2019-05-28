@@ -79,17 +79,3 @@ class Box:
             (self.right, self.height),
             (self.right, 0)
         ]
-
-class Skyline:
-
-    def __init__(self, size):
-        self.size = size
-        self.arr = []
-        self.n = 0
-
-class Strip:
-
-    def __init__(self, left, height):
-        self.left = left
-        self.height = height
-
